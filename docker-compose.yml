@@ -1,0 +1,31 @@
+version: "3.3"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: db-container
+    env_file:
+      - ./mysql/db.env
+    environment:
+      - TZ=Asia/Tokyo
+    restart: always
+    volumes:
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+
+  back:
+    build: ./image
+    container_name: back-container
+    environment: 
+      - TZ=Asia/Tokyo
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    working_dir: /app
+    tty: true
+    command: sh -c "gradle build -x test && java -jar ./build/libs/jpa-0.0.1-SNAPSHOT.jar"
+
+volumes:
+  db-data:
