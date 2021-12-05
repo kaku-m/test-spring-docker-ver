@@ -2,33 +2,27 @@ package com.example.jpa.controller
 
 import com.example.jpa.entity.UserEntity
 import com.example.jpa.repository.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.*
 
-@Controller
-@RequestMapping(path = ["/demo"])
-class UserController {
-    @Autowired
-    private val userRepository: UserRepository? = null
+@RestController
+@RequestMapping("/api/user")
+class UserController(private val userRepository: UserRepository) {
 
-    @PostMapping(path = ["/add"])
-    @ResponseBody
-    fun addNewUser(
+    @PostMapping("/add")
+    fun addUser(
         @RequestParam name: String?,
         @RequestParam password: String?
-    ): String {
+    ): UserEntity {
         val user = UserEntity()
         user.name = name
         user.password = password
-        userRepository!!.save<UserEntity>(user)
-        return "Saved22"
+        return userRepository.save(user)
     }
 
-    @ResponseBody
-    @GetMapping(path = ["/all"])
-    fun allUser(): Iterable<UserEntity?> {
-        return userRepository!!.findAll()
+    @GetMapping("/all")
+    fun allUser(): Iterable<UserEntity> {
+        return userRepository.findAll()
     }
 
 }
