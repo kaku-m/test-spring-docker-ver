@@ -17,11 +17,11 @@ class PageEntity {
     @Column(name = "path", nullable = false)
     var path: String? = null
 
-    @Column(name = "title", length = 255, nullable = false)
+    @Column(name = "title", nullable = false, unique = true, length = 255)
     var title: String? = null
 
     @Column(name = "content")
-    val content: String? = null
+    var content: String? = null
 
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     val createdAt: Timestamp? = null
