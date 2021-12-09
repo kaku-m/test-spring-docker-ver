@@ -2,7 +2,7 @@
 
 ```
 git clone git@github.com:kaku-m/test-spring.git
-cd test-spring
+cd test-spring-docker-ver
 docker-compose up --build
 
 // テスト
