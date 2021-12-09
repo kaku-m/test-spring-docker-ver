@@ -4,9 +4,22 @@
 git clone git@github.com:kaku-m/test-spring.git
 cd test-spring
 docker-compose up --build
-curl http://localhost:8080/demo/add -d name=first -d password=test123
-curl http://localhost:8080/demo/add -d name=second -d password=test234
-curl http://localhost:8080/demo/all
-```
 
-test
+// テスト
+// 一覧取得（最初は空であること）
+curl http://localhost:8080/api/page/list
+// データ登録（親ページID無し）
+curl -X POST http://localhost:8080/api/page/create -d pageTitle=title1
+// データ登録（親ページIDあり）
+curl -X POST http://localhost:8080/api/page/create -d parentPageId=1 -d pageTitle=title2
+// 一覧取得（2件登録されていること）
+curl http://localhost:8080/api/page/list
+// 特定のページ取得
+curl http://localhost:8080/api/page/2
+// 特定のページ更新
+curl -X PUT http://localhost:8080/api/page/update -d pageId=2 -d pageTitle=title2_update -d content=content2_update
+// 特定のページとその子ページを全て削除
+curl -X DELETE http://localhost:8080/api/page/1/delete
+// 一覧取得（全て削除され空であること）
+curl http://localhost:8080/api/page/list
+```
