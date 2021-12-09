@@ -1,4 +1,4 @@
-# test-spring
+# Kotlin + Spring Boot で開発中のAPI
 
 ## 起動
 ```
