@@ -9,20 +9,34 @@ docker-compose up --build
 
 ## テスト
 ```
-// 一覧取得（最初は空であること）
+◆ページ一覧の取得（最初は空であること）
 curl http://localhost:8080/api/page/list
-// データ登録（親ページID無し）
-curl -X POST http://localhost:8080/api/page/create -d pageTitle=title1
-// データ登録（親ページIDあり）
-curl -X POST http://localhost:8080/api/page/create -d parentPageId=1 -d pageTitle=title2
-// 一覧取得（2件登録されていること）
+◆データ登録（親ページID無し）
+curl -X POST http://localhost:8080/api/page/create -d title=title1
+◆データ登録（親ページIDあり）
+curl -X POST http://localhost:8080/api/page/create -d parentPageId=1 -d title=title2
+curl -X POST http://localhost:8080/api/page/create -d parentPageId=1 -d title=title3
+curl -X POST http://localhost:8080/api/page/create -d parentPageId=3 -d title=title4
+◆ページ一覧の取得（4件登録されていること）
 curl http://localhost:8080/api/page/list
-// 特定のページ更新
-curl -X PUT http://localhost:8080/api/page/update -d pageId=2 -d pageTitle=title2_update -d content=content2_update
-// 特定のページ取得（更新されていること）
+◆特定ページの直近の子ページを取得
+curl http://localhost:8080/api/page/1/children
+◆特定ページの直近の親ページを取得
+curl http://localhost:8080/api/page/4/parent
+◆特定ページの祖先ページを取得
+curl http://localhost:8080/api/page/4/ancestors
+◆特定ページの更新
+curl -X PUT http://localhost:8080/api/page/2/update -d title=title2_update -d content=content2_update
+◆特定ページの取得（更新されていること）
 curl http://localhost:8080/api/page/2
-// 特定のページとその子ページを全て削除
+◆特定ページとその子ページを全て削除
 curl -X DELETE http://localhost:8080/api/page/1/delete
-// 一覧取得（全て削除され空であること）
+◆ページ一覧の取得（全て削除され空であること）
 curl http://localhost:8080/api/page/list
+```
+
+## 終了
+--volumesを付けるとDBクリア
+```
+docker-compose down --volumes
 ```
