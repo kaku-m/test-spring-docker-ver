@@ -2,7 +2,7 @@
 
 ## 起動
 ```
-git clone git@github.com:kaku-m/test-spring.git
+git clone git@github.com:kaku-m/test-spring-docker-ver.git
 cd test-spring-docker-ver
 docker-compose up --build
 ```
