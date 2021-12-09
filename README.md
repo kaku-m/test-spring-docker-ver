@@ -1,11 +1,14 @@
 # test-spring
 
+## 起動
 ```
 git clone git@github.com:kaku-m/test-spring.git
 cd test-spring-docker-ver
 docker-compose up --build
+```
 
-// テスト
+## テスト
+```
 // 一覧取得（最初は空であること）
 curl http://localhost:8080/api/page/list
 // データ登録（親ページID無し）
