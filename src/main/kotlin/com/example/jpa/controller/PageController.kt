@@ -19,9 +19,9 @@ class PageController(private val pageService: PageService) {
     @PostMapping("/create")
     fun create(
         @RequestParam(name = "parentPageId", required = false) parentPageId: Int?,
-        @RequestParam(name = "pageTitle") pageTitle: String
+        @RequestParam(name = "title") title: String
     ): PageEntity {
-        return pageService.create(parentPageId, pageTitle)
+        return pageService.create(parentPageId, title)
     }
 
     @GetMapping("/list")
@@ -36,18 +36,35 @@ class PageController(private val pageService: PageService) {
         return pageService.findById(id)
     }
 
-    // findParent
+    @GetMapping("/{id}/children")
+    fun findChildren(
+        @PathVariable(name = "id") id: Int
+    ): Iterable<PageEntity> {
+        return pageService.findChildren(id)
+    }
 
-    // findChildren
+    @GetMapping("/{id}/parent")
+    fun findParent(
+        @PathVariable(name = "id") id: Int
+    ): Optional<PageEntity> {
+        return pageService.findParent(id)
+    }
 
-    @PutMapping("/update")
+    @GetMapping("/{id}/ancestors")
+    fun findAncestors(
+        @PathVariable(name = "id") id: Int
+    ): Iterable<PageEntity> {
+        return pageService.findAncestors(id)
+    }
+
+    @PutMapping("/{id}/update")
     fun update(
-        @RequestParam(name = "pageId") pageId: Int,
-        @RequestParam(name = "pageTitle") pageTitle: String,
+        @PathVariable(name = "id") id: Int,
+        @RequestParam(name = "title") title: String,
         @RequestParam(name = "content") content: String
     ) {
-        return pageService.update(pageId, pageTitle, content)
-        // TODO 戻り値
+        return pageService.update(id, title, content)
+        // TODO 戻り値をどうするか
     }
 
     @DeleteMapping("/{id}/delete")
@@ -55,6 +72,7 @@ class PageController(private val pageService: PageService) {
         @PathVariable(name = "id") id: Int
     ) {
         return pageService.delete(id)
+        // TODO 戻り値をどうするか
     }
 
 }
