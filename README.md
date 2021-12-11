@@ -9,30 +9,41 @@ docker-compose up --build
 
 ## テスト
 ```
-◆ページ一覧の取得（最初は空であること）
-curl http://localhost:8080/api/page/list
+◆ページの一覧取得（最初は空であること）
+curl http://localhost:8080/api/pages
 ◆データ登録（親ページID無し）
-curl -X POST http://localhost:8080/api/page/create -d title=title1
+curl -X POST http://localhost:8080/api/pages/create -d title=title1
 ◆データ登録（親ページIDあり）
-curl -X POST http://localhost:8080/api/page/create -d parentPageId=1 -d title=title2
-curl -X POST http://localhost:8080/api/page/create -d parentPageId=1 -d title=title3
-curl -X POST http://localhost:8080/api/page/create -d parentPageId=3 -d title=title4
-◆ページ一覧の取得（4件登録されていること）
-curl http://localhost:8080/api/page/list
-◆特定ページの直近の子ページを取得
-curl http://localhost:8080/api/page/1/children
-◆特定ページの直近の親ページを取得
-curl http://localhost:8080/api/page/4/parent
-◆特定ページの祖先ページを取得
-curl http://localhost:8080/api/page/4/ancestors
+curl -X POST http://localhost:8080/api/pages/create -d parentPageId=1 -d title=title2
+curl -X POST http://localhost:8080/api/pages/create -d parentPageId=1 -d title=title3
+curl -X POST http://localhost:8080/api/pages/create -d parentPageId=3 -d title=title4
+◆ページの一覧取得（4件登録されていること）
+curl http://localhost:8080/api/pages
+◆特定ページの直近の子ページを取得（id2とid3を取得すること）
+curl http://localhost:8080/api/pages/1/children
+◆特定ページの直近の親ページを取得（id3を取得すること）
+curl http://localhost:8080/api/pages/4/parent
+◆特定ページの祖先ページを取得（id1とid3を取得すること）
+curl http://localhost:8080/api/pages/4/ancestors
 ◆特定ページの更新
-curl -X PUT http://localhost:8080/api/page/2/update -d title=title2_update -d content=content2_update
+curl -X PUT http://localhost:8080/api/pages/2/update -d title=title2_update -d content=content2_update
 ◆特定ページの取得（更新されていること）
-curl http://localhost:8080/api/page/2
-◆特定ページとその子ページを全て削除
-curl -X DELETE http://localhost:8080/api/page/1/delete
-◆ページ一覧の取得（全て削除され空であること）
-curl http://localhost:8080/api/page/list
+curl http://localhost:8080/api/pages/2
+◆特定ページとその子ページを移動
+curl -X PUT http://localhost:8080/api/pages/3/move -d parentPageId=2
+◆ページの一覧取得（id3とid4がid2の下に移動していること）
+curl http://localhost:8080/api/pages
+
+◆画像情報の保存
+curl -X POST http://localhost:8080/api/pages/1/images/save -d name=name1 -d path=path1
+curl -X POST http://localhost:8080/api/pages/1/images/save -d name=name2 -d path=path2
+◆画像情報の取得（2件登録されていること）
+curl http://localhost:8080/api/pages/1/images
+
+◆特定ページとその子ページを削除
+curl -X DELETE http://localhost:8080/api/pages/2/delete
+◆ページの一覧取得（id1のみ取得すること）
+curl http://localhost:8080/api/pages
 ```
 
 ## 終了
