@@ -1,12 +1,12 @@
 package com.example.jpa.repository
 
 import com.example.jpa.entity.PageEntity
+import java.util.Optional
 import org.springframework.stereotype.Repository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
-import java.util.*
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.jpa.repository.Modifying
 
 @Repository
 interface PageRepository: CrudRepository<PageEntity, Int> {
@@ -49,12 +49,28 @@ interface PageRepository: CrudRepository<PageEntity, Int> {
         @Param("id") id: Int,
         @Param("title") title: String,
         @Param("content") content: String
+    ): Int
+    // 戻り値はIntを指定すると更新件数
+
+    @Modifying
+    @Query(
+        """
+        UPDATE PageEntity AS p SET path = CONCAT(:parentPagePath, SUBSTRING(p.path, :position))
+        WHERE p.path LIKE CONCAT(:path, '%')
+        """
     )
+    fun move(
+        @Param("parentPagePath") parentPagePath: String,
+        @Param("path") path: String,
+        @Param("position") position: Int
+    ): Int
+    // 戻り値はIntを指定すると更新件数
 
     @Modifying
     @Query("DELETE FROM PageEntity WHERE path LIKE CONCAT('%/', :id, '/%')")
     fun delete(
         @Param("id") id: Int
-    )
+    ): Int
+    // 戻り値はIntを指定すると削除件数
 
 }

@@ -5,23 +5,26 @@ import javax.persistence.Entity
 import javax.persistence.Table
 import javax.persistence.Id
 import javax.persistence.Column
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 
 @Entity
-@Table(name = "pages")
-class PageEntity {
+@Table(name = "images")
+class ImageEntity {
 
     @Id
-    @Column(name = "id", nullable = false)
-    var id: Int = 0
+    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int = 0
 
-    @Column(name = "path", nullable = false)
+    @Column(name = "page_id", nullable = false)
+    var pageId: Int = 0
+
+    @Column(nullable = false, unique = true, length = 255)
+    var name: String = ""
+
+    @Column(nullable = false)
     var path: String = ""
-
-    @Column(name = "title", nullable = false, unique = true, length = 255)
-    var title: String = ""
-
-    @Column(name = "content")
-    var content: String? = null
 
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     val createdAt: Timestamp? = null
