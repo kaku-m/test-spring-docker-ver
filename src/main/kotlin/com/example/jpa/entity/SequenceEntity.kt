@@ -14,6 +14,6 @@ class SequenceEntity {
     @Id
     @Column(name = "id", nullable = false, insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null
+    val id: Int = 0
 
 }

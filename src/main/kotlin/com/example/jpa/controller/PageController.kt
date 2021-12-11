@@ -1,5 +1,6 @@
 package com.example.jpa.controller
 
+import com.example.jpa.entity.ImageEntity
 import com.example.jpa.service.PageService
 import com.example.jpa.entity.PageEntity
 import java.util.Optional
@@ -13,66 +14,91 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.DeleteMapping
 
 @RestController
-@RequestMapping("/api/page")
+@RequestMapping("/api/pages")
 class PageController(private val pageService: PageService) {
 
     @PostMapping("/create")
     fun create(
-        @RequestParam(name = "parentPageId", required = false) parentPageId: Int?,
-        @RequestParam(name = "title") title: String
+        @RequestParam(required = false) parentPageId: Int?,
+        @RequestParam title: String
     ): PageEntity {
         return pageService.create(parentPageId, title)
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     fun findAll(): Iterable<PageEntity> {
         return pageService.findAll()
     }
 
     @GetMapping("/{id}")
     fun findById(
-        @PathVariable(name = "id") id: Int
+        @PathVariable id: Int
     ): Optional<PageEntity> {
         return pageService.findById(id)
     }
 
     @GetMapping("/{id}/children")
     fun findChildren(
-        @PathVariable(name = "id") id: Int
+        @PathVariable id: Int
     ): Iterable<PageEntity> {
         return pageService.findChildren(id)
     }
 
     @GetMapping("/{id}/parent")
     fun findParent(
-        @PathVariable(name = "id") id: Int
+        @PathVariable id: Int
     ): Optional<PageEntity> {
         return pageService.findParent(id)
     }
 
     @GetMapping("/{id}/ancestors")
     fun findAncestors(
-        @PathVariable(name = "id") id: Int
+        @PathVariable id: Int
     ): Iterable<PageEntity> {
         return pageService.findAncestors(id)
     }
 
     @PutMapping("/{id}/update")
     fun update(
-        @PathVariable(name = "id") id: Int,
-        @RequestParam(name = "title") title: String,
-        @RequestParam(name = "content") content: String
-    ) {
+        @PathVariable id: Int,
+        @RequestParam title: String,
+        @RequestParam content: String
+    ): Int {
         return pageService.update(id, title, content)
+        // TODO 戻り値をどうするか
+    }
+
+    @PutMapping("/{id}/move")
+    fun move(
+        @PathVariable id: Int,
+        @RequestParam parentPageId: Int
+    ): String {
+        return pageService.move(id, parentPageId)
         // TODO 戻り値をどうするか
     }
 
     @DeleteMapping("/{id}/delete")
     fun delete(
-        @PathVariable(name = "id") id: Int
-    ) {
+        @PathVariable id: Int
+    ): Int {
         return pageService.delete(id)
         // TODO 戻り値をどうするか
+    }
+
+    @PostMapping("/{id}/images/save")
+    fun saveImage(
+        @PathVariable(name = "id") pageId: Int,
+        @RequestParam name: String,
+        @RequestParam path: String
+    ): ImageEntity {
+        return pageService.saveImage(pageId, name, path)
+    }
+
+    @GetMapping("/{id}/images")
+    fun findImages(
+        @PathVariable(name = "id") pageId: Int,
+    ): Iterable<ImageEntity> {
+        return pageService.findImages(pageId)
     }
 
 }
