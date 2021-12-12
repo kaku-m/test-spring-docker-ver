@@ -1,8 +1,8 @@
 package com.example.jpa.controller
 
-import com.example.jpa.entity.ImageEntity
 import com.example.jpa.service.PageService
-import com.example.jpa.entity.PageEntity
+import com.example.jpa.entity.Page
+import com.example.jpa.entity.Image
 import java.util.Optional
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
@@ -20,41 +20,42 @@ class PageController(private val pageService: PageService) {
     @PostMapping("/create")
     fun create(
         @RequestParam(required = false) parentPageId: Int?,
-        @RequestParam title: String
-    ): PageEntity {
-        return pageService.create(parentPageId, title)
+        @RequestParam title: String,
+        @RequestParam(required = false) content: String?
+    ): Page {
+        return pageService.create(parentPageId, title, content)
     }
 
-    @GetMapping("")
-    fun findAll(): Iterable<PageEntity> {
+    @GetMapping
+    fun findAll(): Iterable<Page> {
         return pageService.findAll()
     }
 
     @GetMapping("/{id}")
-    fun findById(
+    fun find(
         @PathVariable id: Int
-    ): Optional<PageEntity> {
-        return pageService.findById(id)
+    ): Optional<Page> {
+        return pageService.find(id)
     }
 
     @GetMapping("/{id}/children")
     fun findChildren(
         @PathVariable id: Int
-    ): Iterable<PageEntity> {
+    ): Iterable<Page> {
         return pageService.findChildren(id)
     }
 
     @GetMapping("/{id}/parent")
     fun findParent(
         @PathVariable id: Int
-    ): Optional<PageEntity> {
+    ): Optional<Page> {
         return pageService.findParent(id)
     }
 
     @GetMapping("/{id}/ancestors")
     fun findAncestors(
         @PathVariable id: Int
-    ): Iterable<PageEntity> {
+    ): Iterable<Page> {
         return pageService.findAncestors(id)
     }
 
@@ -63,7 +64,7 @@ class PageController(private val pageService: PageService) {
         @PathVariable id: Int,
         @RequestParam title: String,
         @RequestParam content: String
-    ): Int {
+    ): Page {
         return pageService.update(id, title, content)
         // TODO 戻り値をどうするか
     }
@@ -90,14 +91,14 @@ class PageController(private val pageService: PageService) {
         @PathVariable(name = "id") pageId: Int,
         @RequestParam name: String,
         @RequestParam path: String
-    ): ImageEntity {
+    ): Image {
         return pageService.saveImage(pageId, name, path)
     }
 
     @GetMapping("/{id}/images")
     fun findImages(
         @PathVariable(name = "id") pageId: Int,
-    ): Iterable<ImageEntity> {
+    ): Iterable<Image> {
         return pageService.findImages(pageId)
     }
 

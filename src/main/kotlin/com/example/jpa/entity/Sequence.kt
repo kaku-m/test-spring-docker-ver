@@ -3,17 +3,15 @@ package com.example.jpa.entity
 import javax.persistence.Entity
 import javax.persistence.Table
 import javax.persistence.Id
-import javax.persistence.Column
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
+import javax.persistence.Column
 
 @Entity
 @Table(name = "sequence")
-class SequenceEntity {
-
+class Sequence(
     @Id
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0
-
-}
+    @Column(nullable = false)
+    val id: Int? = null
+)
