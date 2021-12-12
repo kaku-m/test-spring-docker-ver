@@ -10,7 +10,7 @@ import javax.persistence.GenerationType
 
 @Entity
 @Table(name = "images")
-class ImageEntity {
+class Image {
 
     @Id
     @Column(nullable = false)

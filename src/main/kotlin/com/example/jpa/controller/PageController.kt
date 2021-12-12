@@ -1,6 +1,6 @@
 package com.example.jpa.controller
 
-import com.example.jpa.entity.ImageEntity
+import com.example.jpa.entity.Image
 import com.example.jpa.service.PageService
 import com.example.jpa.entity.PageEntity
 import java.util.Optional
@@ -90,14 +90,14 @@ class PageController(private val pageService: PageService) {
         @PathVariable(name = "id") pageId: Int,
         @RequestParam name: String,
         @RequestParam path: String
-    ): ImageEntity {
+    ): Image {
         return pageService.saveImage(pageId, name, path)
     }
 
     @GetMapping("/{id}/images")
     fun findImages(
         @PathVariable(name = "id") pageId: Int,
-    ): Iterable<ImageEntity> {
+    ): Iterable<Image> {
         return pageService.findImages(pageId)
     }
 

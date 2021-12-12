@@ -5,7 +5,7 @@ import com.example.jpa.repository.SequenceRepository
 import com.example.jpa.repository.ImageRepository
 import com.example.jpa.entity.PageEntity
 import com.example.jpa.entity.SequenceEntity
-import com.example.jpa.entity.ImageEntity
+import com.example.jpa.entity.Image
 import java.util.Optional
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -103,16 +103,16 @@ class PageService(
         return pageRepository.delete(id)
     }
 
-    fun saveImage(pageId: Int, name: String, path: String): ImageEntity {
+    fun saveImage(pageId: Int, name: String, path: String): Image {
         // TODO ページ存在チェック
-        val image = ImageEntity()
+        val image = Image()
         image.pageId = pageId
         image.name = name
         image.path = path
         return imageRepository.save(image)
     }
 
-    fun findImages(pageId: Int): Iterable<ImageEntity> {
+    fun findImages(pageId: Int): Iterable<Image> {
         return imageRepository.findImages(pageId)
     }
 
