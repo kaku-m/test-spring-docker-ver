@@ -1,8 +1,8 @@
 package com.example.jpa.controller
 
-import com.example.jpa.entity.Image
 import com.example.jpa.service.PageService
-import com.example.jpa.entity.PageEntity
+import com.example.jpa.entity.Page
+import com.example.jpa.entity.Image
 import java.util.Optional
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,40 +21,40 @@ class PageController(private val pageService: PageService) {
     fun create(
         @RequestParam(required = false) parentPageId: Int?,
         @RequestParam title: String
-    ): PageEntity {
+    ): Page {
         return pageService.create(parentPageId, title)
     }
 
-    @GetMapping("")
-    fun findAll(): Iterable<PageEntity> {
+    @GetMapping("/")
+    fun findAll(): Iterable<Page> {
         return pageService.findAll()
     }
 
     @GetMapping("/{id}")
     fun findById(
         @PathVariable id: Int
-    ): Optional<PageEntity> {
+    ): Optional<Page> {
         return pageService.findById(id)
     }
 
     @GetMapping("/{id}/children")
     fun findChildren(
         @PathVariable id: Int
-    ): Iterable<PageEntity> {
+    ): Iterable<Page> {
         return pageService.findChildren(id)
     }
 
     @GetMapping("/{id}/parent")
     fun findParent(
         @PathVariable id: Int
-    ): Optional<PageEntity> {
+    ): Optional<Page> {
         return pageService.findParent(id)
     }
 
     @GetMapping("/{id}/ancestors")
     fun findAncestors(
         @PathVariable id: Int
-    ): Iterable<PageEntity> {
+    ): Iterable<Page> {
         return pageService.findAncestors(id)
     }
 

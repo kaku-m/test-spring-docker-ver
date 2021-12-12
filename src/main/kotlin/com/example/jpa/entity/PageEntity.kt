@@ -8,7 +8,7 @@ import javax.persistence.Column
 
 @Entity
 @Table(name = "pages")
-class PageEntity {
+class Page {
 
     @Id
     @Column(name = "id", nullable = false)

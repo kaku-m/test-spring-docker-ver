@@ -9,10 +9,10 @@ import javax.persistence.GenerationType
 
 @Entity
 @Table(name = "sequence")
-class SequenceEntity {
+class Sequence {
 
     @Id
-    @Column(name = "id", nullable = false, insertable = false, updatable = false)
+    @Column(nullable = false, insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0
 
