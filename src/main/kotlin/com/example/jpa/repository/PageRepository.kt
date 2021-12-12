@@ -39,15 +39,6 @@ interface PageRepository: CrudRepository<Page, Int> {
     ): Iterable<Page>
 
     @Modifying
-    @Query("UPDATE Page SET title = :title, content = :content WHERE id = :id")
-    fun update(
-        @Param("id") id: Int,
-        @Param("title") title: String,
-        @Param("content") content: String
-    ): Int
-    // 戻り値はIntを指定すると更新件数
-
-    @Modifying
     @Query(
         """
         UPDATE Page AS p SET path = CONCAT(:parentPagePath, SUBSTRING(p.path, :position))

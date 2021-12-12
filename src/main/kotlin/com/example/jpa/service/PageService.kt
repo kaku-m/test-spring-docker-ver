@@ -18,33 +18,37 @@ class PageService(
 ) {
 
     @Transactional
-    fun create(parentPageId: Int?, title: String): Page {
+    fun create(parentPageId: Int?, title: String, content: String?): Page {
         return if (parentPageId is Int) {
-            createChild(parentPageId, title)
+            createChild(parentPageId, title, content)
         } else {
-            createNew(title)
+            createNew(title, content)
         }
     }
 
-    private fun createChild(parentPageId: Int, title: String): Page {
+    private fun createChild(parentPageId: Int, title: String, content: String?): Page {
         val parentPageFindResult: Optional<Page> = pageRepository.findById(parentPageId)
         val parentPage: Page = parentPageFindResult.get() // TODO NoSuchElementException
         // TODO 親ページ存在チェック
         // TODO タイトル重複チェック
         val sequence: Sequence = sequenceRepository.save(Sequence())
-        val page = Page()
-        page.id = sequence.id
-        page.path = "${parentPage.path}${page.id}/"
-        page.title = title
+        val page = Page(
+            id = sequence.id,
+            path = "${parentPage.path}${sequence.id}/",
+            title = title,
+            content = content
+        )
         return pageRepository.save(page)
     }
 
-    private fun createNew(title: String): Page {
+    private fun createNew(title: String, content: String?): Page {
         val sequence: Sequence = sequenceRepository.save(Sequence())
-        val page = Page()
-        page.id = sequence.id
-        page.path = "/${page.id}/"
-        page.title = title
+        val page = Page(
+            id = sequence.id,
+            path = "/${sequence.id}/",
+            title = title,
+            content = content
+        )
         return pageRepository.save(page)
     }
 
@@ -52,7 +56,7 @@ class PageService(
         return pageRepository.findAll()
     }
 
-    fun findById(id: Int): Optional<Page> {
+    fun find(id: Int): Optional<Page> {
         return pageRepository.findById(id)
     }
 
@@ -69,9 +73,13 @@ class PageService(
     }
 
     @Transactional
-    fun update(id: Int, title: String, content: String): Int {
+    fun update(id: Int, title: String, content: String): Page {
         // TODO タイトル重複チェック（当該ページ以外で）
-        return pageRepository.update(id, title, content)
+        val pageFindResult: Optional<Page> = pageRepository.findById(id)
+        val page: Page = pageFindResult.get() // TODO NoSuchElementException
+        page.title = title
+        page.content = content
+        return pageRepository.save(page)
     }
 
     @Transactional
@@ -105,15 +113,16 @@ class PageService(
 
     fun saveImage(pageId: Int, name: String, path: String): Image {
         // TODO ページ存在チェック
-        val image = Image()
-        image.pageId = pageId
-        image.name = name
-        image.path = path
+        val image = Image(
+            pageId = pageId,
+            name = name,
+            path = path
+        )
         return imageRepository.save(image)
     }
 
     fun findImages(pageId: Int): Iterable<Image> {
-        return imageRepository.findImages(pageId)
+        return imageRepository.findByPageIdIs(pageId)
     }
 
 }

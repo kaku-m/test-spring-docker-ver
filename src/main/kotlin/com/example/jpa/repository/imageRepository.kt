@@ -9,9 +9,6 @@ import org.springframework.data.jpa.repository.Query
 @Repository
 interface ImageRepository: CrudRepository<Image, Int> {
 
-    @Query("SELECT i FROM Image AS i WHERE page_id = :pageId")
-    fun findImages(
-        @Param("pageId") pageId: Int,
-    ): Iterable<Image>
+    fun findByPageIdIs(pageId: Int): Iterable<Image>
 
 }

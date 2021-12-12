@@ -1,28 +1,22 @@
 package com.example.jpa.controller
 
-import com.example.jpa.entity.UserEntity
-import com.example.jpa.repository.UserRepository
+import com.example.jpa.service.UserService
+import com.example.jpa.entity.User
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @RestController
-@RequestMapping("/api/user")
-class UserController(private val userRepository: UserRepository) {
+@RequestMapping("/api/users")
+class UserController(private val userService: UserService) {
 
-    @PostMapping("/add")
-    fun addUser(
-        @RequestParam name: String?,
-        @RequestParam password: String?
-    ): UserEntity {
-        val user = UserEntity()
-        user.name = name
-        user.password = password
-        return userRepository.save(user)
-    }
-
-    @GetMapping("/all")
-    fun allUser(): Iterable<UserEntity> {
-        return userRepository.findAll()
+    @PostMapping("/register")
+    fun register(
+        @RequestParam name: String,
+        @RequestParam password: String
+    ): User {
+        return userService.register(name, password)
     }
 
 }

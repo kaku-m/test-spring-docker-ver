@@ -20,21 +20,22 @@ class PageController(private val pageService: PageService) {
     @PostMapping("/create")
     fun create(
         @RequestParam(required = false) parentPageId: Int?,
-        @RequestParam title: String
+        @RequestParam title: String,
+        @RequestParam(required = false) content: String?
     ): Page {
-        return pageService.create(parentPageId, title)
+        return pageService.create(parentPageId, title, content)
     }
 
-    @GetMapping("/")
+    @GetMapping
     fun findAll(): Iterable<Page> {
         return pageService.findAll()
     }
 
     @GetMapping("/{id}")
-    fun findById(
+    fun find(
         @PathVariable id: Int
     ): Optional<Page> {
-        return pageService.findById(id)
+        return pageService.find(id)
     }
 
     @GetMapping("/{id}/children")
@@ -63,7 +64,7 @@ class PageController(private val pageService: PageService) {
         @PathVariable id: Int,
         @RequestParam title: String,
         @RequestParam content: String
-    ): Int {
+    ): Page {
         return pageService.update(id, title, content)
         // TODO 戻り値をどうするか
     }
