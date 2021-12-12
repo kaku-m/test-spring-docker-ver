@@ -11,11 +11,10 @@ docker-compose up --build
 ```
 ◆ページの一覧取得（最初は空であること）
 curl http://localhost:8080/api/pages
-◆データ登録（親ページID無し）
+◆ページの作成
 curl -X POST http://localhost:8080/api/pages/create -d title=title1
-◆データ登録（親ページIDあり）
 curl -X POST http://localhost:8080/api/pages/create -d parentPageId=1 -d title=title2
-curl -X POST http://localhost:8080/api/pages/create -d parentPageId=1 -d title=title3
+curl -X POST http://localhost:8080/api/pages/create -d parentPageId=1 -d title=title3 -d content=content3
 curl -X POST http://localhost:8080/api/pages/create -d parentPageId=3 -d title=title4
 ◆ページの一覧取得（4件登録されていること）
 curl http://localhost:8080/api/pages
@@ -44,6 +43,9 @@ curl http://localhost:8080/api/pages/1/images
 curl -X DELETE http://localhost:8080/api/pages/2/delete
 ◆ページの一覧取得（id1のみ取得すること）
 curl http://localhost:8080/api/pages
+
+◆ユーザーの新規登録
+curl -X POST http://localhost:8080/api/users/register -d name=name1 -d password=password1
 ```
 
 ## 終了
