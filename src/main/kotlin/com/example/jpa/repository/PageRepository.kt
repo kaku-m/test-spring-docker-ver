@@ -45,7 +45,7 @@ interface PageRepository: CrudRepository<Page, Int> {
         WHERE p.path LIKE CONCAT(:path, '%')
         """
     )
-    fun move(
+    fun savePath(
         @Param("parentPagePath") parentPagePath: String,
         @Param("path") path: String,
         @Param("position") position: Int
