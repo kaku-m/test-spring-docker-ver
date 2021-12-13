@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.DeleteMapping
 
 @RestController
 @RequestMapping("/api/pages")
 class PageController(private val pageService: PageService) {
 
-    @PostMapping("/create")
+    @PostMapping
     fun create(
         @RequestParam(required = false) parentPageId: Int?,
         @RequestParam title: String,
@@ -27,39 +27,39 @@ class PageController(private val pageService: PageService) {
     }
 
     @GetMapping
-    fun findAll(): Iterable<Page> {
-        return pageService.findAll()
+    fun getAll(): Iterable<Page> {
+        return pageService.getAll()
     }
 
     @GetMapping("/{id}")
-    fun find(
+    fun get(
         @PathVariable id: Int
     ): Optional<Page> {
-        return pageService.find(id)
+        return pageService.get(id)
     }
 
     @GetMapping("/{id}/children")
-    fun findChildren(
+    fun getChildren(
         @PathVariable id: Int
     ): Iterable<Page> {
-        return pageService.findChildren(id)
+        return pageService.getChildren(id)
     }
 
     @GetMapping("/{id}/parent")
-    fun findParent(
+    fun getParent(
         @PathVariable id: Int
     ): Optional<Page> {
-        return pageService.findParent(id)
+        return pageService.getParent(id)
     }
 
     @GetMapping("/{id}/ancestors")
-    fun findAncestors(
+    fun getAncestors(
         @PathVariable id: Int
     ): Iterable<Page> {
-        return pageService.findAncestors(id)
+        return pageService.getAncestors(id)
     }
 
-    @PutMapping("/{id}/update")
+    @PatchMapping("/{id}")
     fun update(
         @PathVariable id: Int,
         @RequestParam title: String,
@@ -69,16 +69,16 @@ class PageController(private val pageService: PageService) {
         // TODO 戻り値をどうするか
     }
 
-    @PutMapping("/{id}/move")
-    fun move(
+    @PatchMapping("/{id}/path")
+    fun updatePath(
         @PathVariable id: Int,
         @RequestParam parentPageId: Int
     ): String {
-        return pageService.move(id, parentPageId)
+        return pageService.updatePath(id, parentPageId)
         // TODO 戻り値をどうするか
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     fun delete(
         @PathVariable id: Int
     ): Int {
@@ -86,20 +86,20 @@ class PageController(private val pageService: PageService) {
         // TODO 戻り値をどうするか
     }
 
-    @PostMapping("/{id}/images/save")
-    fun saveImage(
+    @PostMapping("/{id}/images")
+    fun createImage(
         @PathVariable(name = "id") pageId: Int,
         @RequestParam name: String,
         @RequestParam path: String
     ): Image {
-        return pageService.saveImage(pageId, name, path)
+        return pageService.createImage(pageId, name, path)
     }
 
     @GetMapping("/{id}/images")
-    fun findImages(
+    fun getImages(
         @PathVariable(name = "id") pageId: Int,
     ): Iterable<Image> {
-        return pageService.findImages(pageId)
+        return pageService.getImages(pageId)
     }
 
 }

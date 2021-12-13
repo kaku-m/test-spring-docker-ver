@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/api/users")
 class UserController(private val userService: UserService) {
 
-    @PostMapping("/register")
-    fun register(
+    @PostMapping
+    fun create(
         @RequestParam name: String,
         @RequestParam password: String
     ): User {
-        return userService.register(name, password)
+        return userService.create(name, password)
     }
 
 }

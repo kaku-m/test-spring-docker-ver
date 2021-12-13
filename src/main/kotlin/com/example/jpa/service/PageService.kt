@@ -6,6 +6,7 @@ import com.example.jpa.repository.ImageRepository
 import com.example.jpa.entity.Page
 import com.example.jpa.entity.Sequence
 import com.example.jpa.entity.Image
+import com.example.jpa.util.TimestampUtil
 import java.util.Optional
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -36,7 +37,9 @@ class PageService(
             id = sequence.id,
             path = "${parentPage.path}${sequence.id}/",
             title = title,
-            content = content
+            content = content,
+            createdAt = TimestampUtil.getCurrentTimestamp(),
+            updatedAt = TimestampUtil.getCurrentTimestamp()
         )
         return pageRepository.save(page)
     }
@@ -47,28 +50,30 @@ class PageService(
             id = sequence.id,
             path = "/${sequence.id}/",
             title = title,
-            content = content
+            content = content,
+            createdAt = TimestampUtil.getCurrentTimestamp(),
+            updatedAt = TimestampUtil.getCurrentTimestamp()
         )
         return pageRepository.save(page)
     }
 
-    fun findAll(): Iterable<Page> {
+    fun getAll(): Iterable<Page> {
         return pageRepository.findAll()
     }
 
-    fun find(id: Int): Optional<Page> {
+    fun get(id: Int): Optional<Page> {
         return pageRepository.findById(id)
     }
 
-    fun findChildren(id: Int): Iterable<Page> {
+    fun getChildren(id: Int): Iterable<Page> {
         return pageRepository.findChildren(id)
     }
 
-    fun findParent(id: Int): Optional<Page> {
+    fun getParent(id: Int): Optional<Page> {
         return pageRepository.findParent(id)
     }
 
-    fun findAncestors(id: Int): Iterable<Page> {
+    fun getAncestors(id: Int): Iterable<Page> {
         return pageRepository.findAncestors(id)
     }
 
@@ -79,11 +84,12 @@ class PageService(
         val page: Page = pageFindResult.get() // TODO NoSuchElementException
         page.title = title
         page.content = content
+        page.updatedAt = TimestampUtil.getCurrentTimestamp()
         return pageRepository.save(page)
     }
 
     @Transactional
-    fun move(id: Int, parentPageId: Int): String {
+    fun updatePath(id: Int, parentPageId: Int): String {
         if (id == parentPageId) {
             return "エラー（移動先が自分の下）"
         }
@@ -102,7 +108,7 @@ class PageService(
         val pageFindResult: Optional<Page> = pageRepository.findById(id)
         val page: Page = pageFindResult.get() // TODO NoSuchElementException
         val position: Int = page.path.indexOf("/${id}/") + 2
-        val count: Int = pageRepository.move(parentPage.path, page.path, position)
+        val count: Int = pageRepository.savePath(parentPage.path, page.path, position)
         return "${count}件更新しました parentPage.path=${parentPage.path} page.path=${page.path} position=${position}"
     }
 
@@ -111,17 +117,19 @@ class PageService(
         return pageRepository.delete(id)
     }
 
-    fun saveImage(pageId: Int, name: String, path: String): Image {
+    fun createImage(pageId: Int, name: String, path: String): Image {
         // TODO ページ存在チェック
         val image = Image(
             pageId = pageId,
             name = name,
-            path = path
+            path = path,
+            createdAt = TimestampUtil.getCurrentTimestamp(),
+            updatedAt = TimestampUtil.getCurrentTimestamp()
         )
         return imageRepository.save(image)
     }
 
-    fun findImages(pageId: Int): Iterable<Image> {
+    fun getImages(pageId: Int): Iterable<Image> {
         return imageRepository.findByPageIdIs(pageId)
     }
 

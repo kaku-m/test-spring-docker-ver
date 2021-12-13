@@ -23,8 +23,8 @@ class Page(
     var content: String? = null,
 
     @Column(name = "created_at", updatable = false)
-    val createdAt: Timestamp = Timestamp(System.currentTimeMillis()),
+    val createdAt: Timestamp,
 
     @Column(name = "updated_at")
-    val updatedAt: Timestamp = Timestamp(System.currentTimeMillis())
+    var updatedAt: Timestamp
 )
